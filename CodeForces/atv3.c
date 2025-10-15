@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-// Função para o merge (junção ordenada)
 void merge(int arr[], int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -11,7 +11,6 @@ void merge(int arr[], int left, int mid, int right) {
     for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
 
     int i = 0, j = 0, k = left;
-
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) arr[k++] = L[i++];
         else arr[k++] = R[j++];
@@ -21,7 +20,6 @@ void merge(int arr[], int left, int mid, int right) {
     while (j < n2) arr[k++] = R[j++];
 }
 
-// Função recursiva do merge sort
 void mergeSort(int arr[], int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
@@ -32,28 +30,33 @@ void mergeSort(int arr[], int left, int right) {
 }
 
 int main() {
-    int n;
-    scanf("%d", &n);
+    char linha1[50], linha2[200];
 
-    int p[n];       // p[i] = amigo que recebeu presente do amigo i+1
-    int result[n];  // result[i] = quem deu presente para o amigo i+1
+    // lê primeira linha (n)
+    fgets(linha1, sizeof(linha1), stdin);
+    int n = atoi(linha1);
 
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &p[i]);
+    // lê segunda linha (valores)
+    fgets(linha2, sizeof(linha2), stdin);
+
+    int p[100], result[100];
+    char *token = strtok(linha2, " \n");
+    int i = 0;
+
+    while (token != NULL && i < n) {
+        p[i++] = atoi(token);
+        token = strtok(NULL, " \n");
     }
 
-    // Inverter a relação
-    for (int i = 0; i < n; i++) {
-        int destinatario = p[i];          // amigo que recebeu presente
-        result[destinatario - 1] = i + 1; // quem deu o presente
+    for (int j = 0; j < n; j++) {
+        int destinatario = p[j];
+        result[destinatario - 1] = j + 1;
     }
 
-    // Ordenar o vetor result (usando merge sort)
     mergeSort(result, 0, n - 1);
 
-    // Imprimir resultado
-    for (int i = 0; i < n; i++) {
-        printf("%d ", result[i]);
+    for (int j = 0; j < n; j++) {
+        printf("%d ", result[j]);
     }
 
     return 0;
